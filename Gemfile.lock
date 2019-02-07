@@ -105,7 +105,7 @@ PLATFORMS
 
 DEPENDENCIES
   addressable (~> 2.3.8)
-  bundler (~> 2.0)
+  bundler (~> 1.16)
   byebug
   coveralls
   json
@@ -123,4 +123,4 @@ RUBY VERSION
    ruby 2.4.3p205
 
 BUNDLED WITH
-   2.0.1
+   1.16.5

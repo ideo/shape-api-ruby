@@ -4,6 +4,8 @@ require 'securerandom'
 
 module ShapeApi
   class Base < ::JsonApiClient::Resource
+    DEFAULT_BASE_URL = 'https://www.shape.space/api/v1/'.freeze
+
     class_attribute :api_token
 
     # There is a bug with included resources where ID is cast as an integer,
@@ -11,8 +13,8 @@ module ShapeApi
     property :id, type: :string
     property :number, type: :float
 
-    def self.configure(url:, api_token:)
-      self.site = url # e.g. https://www.shape.space/api/v1/
+    def self.configure(url: DEFAULT_BASE_URL, api_token:)
+      self.site = url
       self.api_token = api_token
 
       # Sets up connection with token
