@@ -8,7 +8,7 @@ describe ShapeApi::Base do
     before do
       ShapeApi::Base.configure(
         url: shape_api_url,
-        api_token: api_token
+        api_token: api_token,
       )
     end
 

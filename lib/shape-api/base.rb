@@ -1,10 +1,10 @@
-# Base resource for models on Network API
+# Base resource for models on Shape API
 
 require 'securerandom'
 
 module ShapeApi
   class Base < ::JsonApiClient::Resource
-    DEFAULT_BASE_URL = 'https://www.shape.space/api/v1/'.freeze
+    DEFAULT_BASE_URL = 'https://www.shape.space/api/v1'.freeze
 
     class_attribute :api_token
 
@@ -36,10 +36,12 @@ module ShapeApi
     def included_relationship_json(name)
       return if relationships[name].blank? ||
                 relationships[name]['data'].blank?
+
       type = relationships[name]['data']['type']
       id = relationships[name]['data']['id']
       included_data = last_result_set.included.data[type]
       return if included_data.blank?
+
       included_data[id.to_i] || included_data[id.to_s]
     end
   end
