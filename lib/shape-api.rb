@@ -10,6 +10,7 @@ end
 require 'shape-api/version'
 require 'shape-api/base'
 
+require 'shape-api/concerns/resourceable'
 require 'shape-api/application_organization'
 require 'shape-api/application'
 require 'shape-api/collection_card'

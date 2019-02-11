@@ -24,4 +24,30 @@ describe ShapeApi::Organization do
       expect(WebMock).to have_requested(:get, filtered_url)
     end
   end
+
+  describe '#groups' do
+    let(:organization) { ShapeApi::Organization.new(id: 1) }
+    let(:api_url) { 'https://www.shape.space/api/v1/organizations/1/groups' }
+    before do
+      stub_request(:get, api_url)
+    end
+
+    it 'should return the organization\'s groups' do
+      organization.groups
+      expect(WebMock).to have_requested(:get, api_url)
+    end
+  end
+
+  describe '#use' do
+    let(:organization) { ShapeApi::Organization.new(id: 1) }
+    let(:api_url) { 'https://www.shape.space/api/v1/users/switch_org' }
+    before do
+      stub_request(:post, api_url)
+    end
+
+    it 'should switch the user to the organization' do
+      organization.use
+      expect(WebMock).to have_requested(:post, api_url)
+    end
+  end
 end

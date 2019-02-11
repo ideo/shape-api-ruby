@@ -25,8 +25,7 @@ describe ShapeApi::CollectionCard do
 
     it 'should use collection_card variables added in build method' do
       ShapeApi::CollectionCard
-        .build(parent_id: 3, order: 2)
-        .external_id(99)
+        .build(parent_id: 3, external_id: 99, order: 2)
         .create_with_text_item(content: 'Hello')
       expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
         .with(body: json_body_including(parent_id: 3, order: 2))
@@ -34,8 +33,7 @@ describe ShapeApi::CollectionCard do
 
     it 'should include external_id in collection_card params' do
       ShapeApi::CollectionCard
-        .build(parent_id: 3, order: 2)
-        .external_id(99)
+        .build(parent_id: 3, external_id: 99, order: 2)
         .create_with_text_item(content: 'Hello')
       expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
         .with(body: json_body_including(parent_id: 3, order: 2, external_id: 99))
@@ -55,8 +53,7 @@ describe ShapeApi::CollectionCard do
 
       it 'should include external_id in collection_card params' do
         result = ShapeApi::CollectionCard
-                 .build(parent_id: 3, order: 2)
-                 .external_id(99)
+                 .build(parent_id: 3, external_id: 99, order: 2)
                  .create_with_text_item(content: 'Hello')
 
         expect(result.persisted?).to be false

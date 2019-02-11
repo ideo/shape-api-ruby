@@ -1,15 +1,11 @@
 module ShapeApi
   class CollectionCard < Base
-    def self.build(parent_id:, order: nil, height: 1, width: 1)
+    def self.build(parent_id:, external_id: nil, order: nil, height: 1, width: 1)
       @parent_id = parent_id
+      @external_id = external_id
       @order = order
       @height = height
       @width = width
-      self
-    end
-
-    def self.external_id(id)
-      @external_id = id
       self
     end
 
