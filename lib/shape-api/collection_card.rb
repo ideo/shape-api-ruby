@@ -1,5 +1,7 @@
 module ShapeApi
   class CollectionCard < Base
+    belongs_to :collection, shallow_path: true
+
     def self.build(parent_id:, external_id: nil, order: nil, height: 1, width: 1)
       @parent_id = parent_id
       @external_id = external_id

@@ -22,7 +22,7 @@ group :development, :test do
   gem 'byebug'
 end
 
-# Specify your gem's dependencies in network-ruby-api.gemspec
+# Specify your gem's dependencies in shape-api-ruby.gemspec
 gemspec
 
 ruby '2.4.3'
