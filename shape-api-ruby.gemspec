@@ -4,7 +4,7 @@ require 'shape-api/version'
 
 Gem::Specification.new do |gem|
   gem.add_development_dependency 'bundler', '~> 1.16'
-  gem.add_dependency 'json_api_client', '~> 1.9'
+  gem.add_dependency 'json_api_client', '~> 1.5', '>= 1.5.3'
   gem.authors       = ['Josh Schwartzman', 'Dave Kaplan']
   gem.email         = %w[jschwartzman@ideo.com dkaplan@ideo.com]
   gem.description   = 'IDEO Shape API utilities.'
