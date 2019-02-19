@@ -1,43 +1,39 @@
 module ShapeApi
   class CollectionCard < Base
-    def self.build(parent_id:, external_id: nil, order: nil, height: 1, width: 1)
-      @parent_id = parent_id
-      @external_id = external_id
-      @order = order
-      @height = height
-      @width = width
-      self
-    end
-
-    def self.create_with_text_item(content:)
-      text_data = { ops: [insert: "#{content}\n"] }
-      create_with(
-        :item,
-        type: 'Item::TextItem',
-        content: content,
-        text_data: text_data,
-      )
-    end
-
-    def self.create_with_collection(name:)
-      create_with(
-        :collection,
-        name: name,
-      )
-    end
-
-    def self.create_with(type, **attributes)
-      return false unless %i[item collection].include? type
-
+    def self.build(attributes: {}, item_attributes: {}, collection_attributes: {})
       params = {
-        parent_id: @parent_id,
-        external_id: @external_id,
-        order: @order,
-        height: @height,
-        width: @width,
-      }
-      params["#{type}_attributes"] = attributes
-      create(params)
+        order: 0,
+        height: 1,
+        width: 1,
+      }.merge(attributes)
+      params[:item_attributes] = item_attributes if item_attributes.present?
+      params[:collection_attributes] = collection_attributes if collection_attributes.present?
+      new(params)
+    end
+
+    def self.create_with_text_item(content:, card_attributes: {})
+      text_data = { ops: [insert: "#{content}\n"] }
+      card = build(
+        attributes: card_attributes,
+        item_attributes: {
+          type: 'Item::TextItem',
+          content: content,
+          text_data: text_data,
+        },
+      )
+      card.save
+      card
+    end
+
+    def self.create_with_collection(name:, card_attributes: {})
+      card = build(
+        attributes: card_attributes,
+        collection_attributes: {
+          name: name,
+        },
+      )
+      card.save
+      card
     end
   end
 end

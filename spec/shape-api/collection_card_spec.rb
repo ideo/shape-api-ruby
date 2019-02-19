@@ -17,24 +17,36 @@ describe ShapeApi::CollectionCard do
   describe '#create_with' do
     it 'should return a successful result' do
       result = ShapeApi::CollectionCard
-               .build(parent_id: 3, order: 2)
-               .create_with_text_item(content: 'Hello')
+               .create_with_text_item(
+                 content: 'Hello',
+                 card_attributes: {
+                   parent_id: 3, order: 2
+                 },
+               )
       expect(result.persisted?).to be true
       expect(result.errors.messages).to be_empty
     end
 
     it 'should use collection_card variables added in build method' do
       ShapeApi::CollectionCard
-        .build(parent_id: 3, external_id: 99, order: 2)
-        .create_with_text_item(content: 'Hello')
+        .create_with_text_item(
+          content: 'Hello',
+          card_attributes: {
+            parent_id: 3, external_id: 99, order: 2
+          },
+        )
       expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
         .with(body: json_body_including(parent_id: 3, order: 2))
     end
 
     it 'should include external_id in collection_card params' do
       ShapeApi::CollectionCard
-        .build(parent_id: 3, external_id: 99, order: 2)
-        .create_with_text_item(content: 'Hello')
+        .create_with_text_item(
+          content: 'Hello',
+          card_attributes: {
+            parent_id: 3, external_id: 99, order: 2
+          },
+        )
       expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
         .with(body: json_body_including(parent_id: 3, order: 2, external_id: 99))
     end
@@ -53,8 +65,12 @@ describe ShapeApi::CollectionCard do
 
       it 'should include external_id in collection_card params' do
         result = ShapeApi::CollectionCard
-                 .build(parent_id: 3, external_id: 99, order: 2)
-                 .create_with_text_item(content: 'Hello')
+                 .create_with_text_item(
+                   content: 'Hello',
+                   card_attributes: {
+                     parent_id: 3, external_id: 99, order: 2
+                   },
+                 )
 
         expect(result.persisted?).to be false
         expect(result.errors.messages).not_to be_empty
@@ -65,8 +81,12 @@ describe ShapeApi::CollectionCard do
   describe '#create_with_text_item' do
     it 'should convert text content into quill-friendly params' do
       ShapeApi::CollectionCard
-        .build(parent_id: 1)
-        .create_with_text_item(content: 'Hello')
+        .create_with_text_item(
+          content: 'Hello',
+          card_attributes: {
+            parent_id: 1,
+          }
+        )
       expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
         .with(body: json_body_including(ops: [{ insert: "Hello\n" }]))
     end
@@ -75,8 +95,12 @@ describe ShapeApi::CollectionCard do
   describe '#create_with_collection' do
     it 'should create a collection with the given name' do
       ShapeApi::CollectionCard
-        .build(parent_id: 1)
-        .create_with_collection(name: 'Subcollection')
+        .create_with_collection(
+          name: 'Subcollection',
+          card_attributes: {
+            parent_id: 1,
+          }
+        )
       expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
         .with(body: json_body_including(name: 'Subcollection'))
     end

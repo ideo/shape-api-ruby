@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'shape-api/version'
 
 Gem::Specification.new do |gem|
-  gem.add_development_dependency 'bundler', '~> 1.16'
+  gem.add_development_dependency 'bundler', '~> 2.0.1'
   gem.add_dependency 'json_api_client', '~> 1.5', '>= 1.5.3'
   gem.authors       = ['Josh Schwartzman', 'Dave Kaplan']
   gem.email         = %w[jschwartzman@ideo.com dkaplan@ideo.com]
