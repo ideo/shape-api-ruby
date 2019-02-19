@@ -1,8 +1,5 @@
 module ShapeApi
   class CollectionCard < Base
-    # Removing as route is not nested
-    # belongs_to :collection, shallow_path: true
-
     def self.build(parent_id:, external_id: nil, order: nil, height: 1, width: 1)
       @parent_id = parent_id
       @external_id = external_id
