@@ -14,50 +14,36 @@ describe ShapeApi::CollectionCard do
       )
   end
 
-  describe '#create_with' do
-    it 'should return a successful result' do
-      result = ShapeApi::CollectionCard
-               .build(parent_id: 3, order: 2)
-               .create_with_text_item(content: 'Hello')
-      expect(result.persisted?).to be true
-      expect(result.errors.messages).to be_empty
-    end
-
-    it 'should use collection_card variables added in build method' do
-      ShapeApi::CollectionCard
-        .build(parent_id: 3, external_id: 99, order: 2)
-        .create_with_text_item(content: 'Hello')
-      expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
-        .with(body: json_body_including(parent_id: 3, order: 2))
-    end
-
-    it 'should include external_id in collection_card params' do
-      ShapeApi::CollectionCard
-        .build(parent_id: 3, external_id: 99, order: 2)
-        .create_with_text_item(content: 'Hello')
-      expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
-        .with(body: json_body_including(parent_id: 3, order: 2, external_id: 99))
-    end
-
-    context 'with errors' do
-      before do
-        stub_request(:post, 'https://www.shape.space/api/v1/collection_cards')
-          .to_return(
-            headers: { content_type: 'application/vnd.api+json' },
-            status: 422,
-            body: JSON.generate(
-              errors: [{ external_id: 'error msg' }],
-            ),
+  describe '#create' do
+    context 'with a collection' do
+      it 'should create a collection with the given name' do
+        ShapeApi::CollectionCard
+          .create(
+            parent_id: 1,
+            collection_attributes: {
+              name: 'Subcollection',
+            },
           )
+        expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
+          .with(body: json_body_including(name: 'Subcollection'))
       end
+    end
 
-      it 'should include external_id in collection_card params' do
-        result = ShapeApi::CollectionCard
-                 .build(parent_id: 3, external_id: 99, order: 2)
-                 .create_with_text_item(content: 'Hello')
+    context 'with an item' do
+      let(:link_url) { 'http://something.to.link/to' }
 
-        expect(result.persisted?).to be false
-        expect(result.errors.messages).not_to be_empty
+      it 'should create an item with the given name' do
+        ShapeApi::CollectionCard
+          .create(
+            parent_id: 1,
+            item_attributes: {
+              name: 'My Link item',
+              url: link_url,
+              type: 'Item::LinkItem',
+            },
+          )
+        expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
+          .with(body: json_body_including(url: link_url))
       end
     end
   end
@@ -65,20 +51,23 @@ describe ShapeApi::CollectionCard do
   describe '#create_with_text_item' do
     it 'should convert text content into quill-friendly params' do
       ShapeApi::CollectionCard
-        .build(parent_id: 1)
-        .create_with_text_item(content: 'Hello')
+        .create_with_text_item(
+          parent_id: 1,
+          item_attributes: {
+            name: 'My Item',
+            content: 'Hello',
+          },
+        )
       expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
         .with(body: json_body_including(ops: [{ insert: "Hello\n" }]))
     end
-  end
 
-  describe '#create_with_collection' do
-    it 'should create a collection with the given name' do
-      ShapeApi::CollectionCard
-        .build(parent_id: 1)
-        .create_with_collection(name: 'Subcollection')
-      expect(WebMock).to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
-        .with(body: json_body_including(name: 'Subcollection'))
+    context 'with missing item_attributes' do
+      it 'should return an error' do
+        result = ShapeApi::CollectionCard.create_with_text_item(parent_id: 1)
+        expect(result.errors.full_messages.first).to eq 'Item attributes required'
+        expect(WebMock).not_to have_requested(:post, 'https://www.shape.space/api/v1/collection_cards')
+      end
     end
   end
 end
