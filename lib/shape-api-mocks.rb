@@ -13,8 +13,8 @@ module ShapeApiMocks
   # let(:collection_instance) { double('ShapeApi::Collection', external_id: 45) }
   #
   # before do
-  #   shape_api_register_double('ShapeApi::Item')
-  #   shape_api_register_double('ShapeApi::Collection',
+  #   shape_api_register_class_double('ShapeApi::Item')
+  #   shape_api_register_class_double('ShapeApi::Collection',
   #                             create: collection_instance)
   # end
   #
@@ -36,10 +36,10 @@ module ShapeApiMocks
                              end
 
     # Define an instance double for this model
-    define_singleton_method "#{underscore_klass}_instance_double" do
+    define_singleton_method "#{underscore_klass}_instance_double" do |attrs = {}|
       double(
         model_name,
-        default_instance_attrs,
+        default_instance_attrs.deep_merge(attrs || {}),
       )
     end
 
@@ -48,19 +48,19 @@ module ShapeApiMocks
     #
     # You can then pass params to be used for default return values
     #
-    define_singleton_method "#{underscore_klass}_double" do
+    define_singleton_method "#{underscore_klass}_double" do |params = {}|
       instance_double = send("#{underscore_klass}_instance_double")
 
       allow(klass).to receive(:where).and_return(
-        custom_instance_doubles[:where] || [instance_double],
+        custom_instance_doubles[:where] || params[:where] || [instance_double],
       )
 
       allow(klass).to receive(:new).and_return(
-        custom_instance_doubles[:new] || instance_double,
+        custom_instance_doubles[:new] || params[:new] || instance_double,
       )
 
       allow(klass).to receive(:create).and_return(
-        custom_instance_doubles[:create] || instance_double,
+        custom_instance_doubles[:create] || params[:create] || instance_double,
       )
     end
   end
