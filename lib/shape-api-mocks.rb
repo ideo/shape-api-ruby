@@ -7,25 +7,7 @@ module ShapeApiMocks
   #     config.include ShapeApiMocks
   #   end
   #
-  # In your tests, you can register all models that you'd like mocked
-  # in before { } block, such as before { shape_api_register_double('Collection') }
-  #
-  # That will mock the ShapeApi::Collection class,
-  # adding default return values for where/new/create methods.
-  #
-  # e.g.
-  #
-  # let(:collection_instance) { double('ShapeApi::Collection', external_id: 45) }
-  #
-  # before do
-  #   shape_api_register_class_double('ShapeApi::Item')
-  #   shape_api_register_class_double('ShapeApi::Collection',
-  #                             create: collection_instance)
-  # end
-  #
-  # it 'should return values' do
-  #   expect(ShapeApi::Collection).to receive(:create).and_return(collection_instance)
-  # end
+  # See the README for usage details
   #
 
   def shape_api_register_double(model_name, custom_instance_doubles = {})
