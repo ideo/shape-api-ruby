@@ -14,23 +14,17 @@ module ShapeApiMocks
     klass = model_name.safe_constantize
     underscore_klass = klass.model_name.param_key
 
-    # Check if there are custom instance attrs defined for this model,
-    # otherwise use default instance attrs
-    default_instance_attrs = if defined?(custom_instance_attrs)
-                               send(custom_instance_attrs)
-                             else
-                               shape_api_default_instance_attrs(klass)
-                             end
-
     # Define an instance double for this model
+    #
     define_singleton_method "#{underscore_klass}_instance_double" do |attrs = {}|
+      default_instance_attrs = shape_api_default_instance_attrs(klass)
       double(
         model_name,
         default_instance_attrs.deep_merge(attrs || {}),
       )
     end
 
-    # Defines method that matches lowercase class name,
+    # Define class dobule that matches lowercase class name,
     # e.g. `shape_api_collection_double`
     #
     # You can then pass params to be used for default return values
@@ -50,19 +44,9 @@ module ShapeApiMocks
         custom_instance_doubles[:create] || params[:create] || instance_double,
       )
     end
-  end
 
-  # Custom Instance Attributes
-  #
-  # Define any models that have custom instance attribute keys
-  #
-
-  def shape_api_organization_instance_attrs
-    default_api_instance_attrs(
-      ShapeApi::Organization,
-    ).merge(
-      current_user_collection_id: 1,
-    )
+    # Call class methods so they are mocked
+    send("#{underscore_klass}_double")
   end
 
   # Default Instance Attributes
