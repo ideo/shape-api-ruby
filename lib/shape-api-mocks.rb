@@ -1,6 +1,11 @@
 module ShapeApiMocks
   # To include these, add to your spec helper:
+  #
   #   require 'shape-api-mocks'
+  #
+  #   RSpec.configure do |config|
+  #     config.include ShapeApiMocks
+  #   end
   #
   # In your tests, you can register all models that you'd like mocked
   # in before { } block, such as before { shape_api_register_double('Collection') }
