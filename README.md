@@ -55,8 +55,7 @@ RSpec.configure do |config|
 end
 ```
 
-In your tests, you can register all models that you'd like mocked
-in before { } block, such as:
+In your tests, you can register all models that you'd like mocked in before block, such as:
 
 ```ruby
 before do
@@ -72,7 +71,6 @@ For Example:
 
 before do
   shape_api_register_class_double('ShapeApi::Collection')
-  shape_api_register_class_double('ShapeApi::Item')
 end
 
 context 'mocking create' do
