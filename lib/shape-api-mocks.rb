@@ -56,7 +56,10 @@ module ShapeApiMocks
     {
       id: 1,
       external_id: "My#{klass}_1",
-      errors: [],
+      errors: double(
+        ':[]': [],
+        full_messages: [],
+      ),
       new: true,
       save: true,
       update_attributes: true,
