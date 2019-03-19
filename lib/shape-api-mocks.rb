@@ -43,6 +43,10 @@ module ShapeApiMocks
       allow(klass).to receive(:create).and_return(
         custom_instance_doubles[:create] || params[:create] || instance_double,
       )
+
+      allow(klass).to receive(:find).and_return(
+        custom_instance_doubles[:find] || params[:find] || instance_double,
+      )
     end
 
     # Call class methods so they are mocked
