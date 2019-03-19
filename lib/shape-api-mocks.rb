@@ -36,16 +36,16 @@ module ShapeApiMocks
         custom_instance_doubles[:where] || params[:where] || [instance_double],
       )
 
+      allow(klass).to receive(:find).and_return(
+        custom_instance_doubles[:find] || params[:find] || [instance_double],
+      )
+
       allow(klass).to receive(:new).and_return(
         custom_instance_doubles[:new] || params[:new] || instance_double,
       )
 
       allow(klass).to receive(:create).and_return(
         custom_instance_doubles[:create] || params[:create] || instance_double,
-      )
-
-      allow(klass).to receive(:find).and_return(
-        custom_instance_doubles[:find] || params[:find] || instance_double,
       )
     end
 
