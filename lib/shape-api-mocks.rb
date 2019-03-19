@@ -61,7 +61,8 @@ module ShapeApiMocks
       id: 1,
       external_id: "My#{klass}_1",
       errors: double(
-        ':[]': [],
+        :[] => [],
+        empty?: true,
         full_messages: [],
       ),
       new: true,
