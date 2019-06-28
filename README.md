@@ -41,6 +41,40 @@ ShapeApi::User
 
 To enable detailed request logging, you can set `ENV['DEBUG'] = '1'`
 
+## Roles
+
+The `.allowed_roles` class methods on `ShapeApi::Group`,
+`ShapeApi::Collection` and `ShapeApi::Item` returns an array of
+allowed roles for each model type.
+
+The `create_role` and `delete_role` methods are available on `ShapeApi::Collection` and `ShapeApi::Item`, and allow you to add/remove roles from those resources
+
+```
+create_role(role_name, params = {})
+
+delete_role(role_name, params = {})
+
+Available params for both methods:
+- [user_ids] - array of Shape user ids to add/remove
+- [group_ids] - array of Shape group ids to add/remove
+- is_switching - boolean - if user is merely switching roles rather than a new role
+    - default true
+- send_invites - boolean - send invitations to users (only applicable when creating a new role)
+   - default true
+```
+
+If you call create_role and send_invites for user(s) that were
+already added to the resource, they will still get an email
+invitation (it doesn't care that they already had access).
+
+Examples:
+
+```
+collection.create_role(:editor, { group_ids: [45]})
+
+item.delete_role(:editor, { user_ids: [92]})
+```
+
 ## Url Helpers
 
 Some models have url helpers that generate Shape front-end urls.
@@ -59,7 +93,7 @@ group.manage_url(org_slug: 'mitsui')
 'https://www.shape.space/mitsui?manage_group_id=987'
 ```
 
-ShapeApi::Collection and ShapeApi::Item also have `url` instance methods:
+`ShapeApi::Collection` and `ShapeApi::Item` also have `url` instance methods:
 
 ```
 collection.url(org_slug: 'ford')

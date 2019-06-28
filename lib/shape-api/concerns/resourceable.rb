@@ -2,6 +2,16 @@ module ShapeApi
   module Resourceable
     extend ActiveSupport::Concern
 
+    GROUP_ROLES = %i[admin member].freeze
+    CONTENT_ROLES = %i[editor viewer].freeze
+
+    included do
+      def self.allowed_roles
+        return CONTENT_ROLES if name == 'ShapeApi::Collection' || name == 'ShapeApi::Item'
+        return GROUP_ROLES if name == 'ShapeApi::Group'
+      end
+    end
+
     # Available params for both methods:
     # - [user_ids] - array of Shape user ids to add/remove
     # - [group_ids] - array of Shape group ids to add/remove
