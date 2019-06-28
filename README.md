@@ -47,6 +47,11 @@ The `.allowed_roles` class methods on `ShapeApi::Group`,
 `ShapeApi::Collection` and `ShapeApi::Item` returns an array of
 allowed roles for each model type.
 
+```
+ShapeApi::Collection.allowed_roles
+> [:editor, :viewer]
+```
+
 The `create_role` and `delete_role` methods are available on `ShapeApi::Collection` and `ShapeApi::Item`, and allow you to add/remove roles from those resources
 
 ```
@@ -83,24 +88,24 @@ Some models have url helpers that generate Shape front-end urls.
 
 ```
 ShapeApi::Group.manage_url(id: 987, org_slug: 'mitsui')
-'https://www.shape.space/mitsui?manage_group_id=987'
+>  "https://www.shape.space/mitsui?manage_group_id=987"
 ```
 
 There is also a corresponding instance method:
 
 ```
 group.manage_url(org_slug: 'mitsui')
-'https://www.shape.space/mitsui?manage_group_id=987'
+> "https://www.shape.space/mitsui?manage_group_id=987"
 ```
 
 `ShapeApi::Collection` and `ShapeApi::Item` also have `url` instance methods:
 
 ```
 collection.url(org_slug: 'ford')
-'https://www.shape.space/ford/collections/123'
+> "https://www.shape.space/ford/collections/123"
 
 collection.url(org_slug: 'ford')
-'https://www.shape.space/ford/collections/123'
+> "https://www.shape.space/ford/collections/123"
 ```
 
 ## Testing
