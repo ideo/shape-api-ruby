@@ -41,6 +41,34 @@ ShapeApi::User
 
 To enable detailed request logging, you can set `ENV['DEBUG'] = '1'`
 
+## Url Helpers
+
+Some models have url helpers that generate Shape front-end urls.
+
+`ShapeApi::Group` has a class method to generate the group manage url (opens the group manage modal):
+
+```
+ShapeApi::Group.manage_url(id: 987, org_slug: 'mitsui')
+'https://www.shape.space/mitsui?manage_group_id=987'
+```
+
+There is also a corresponding instance method:
+
+```
+group.manage_url(org_slug: 'mitsui')
+'https://www.shape.space/mitsui?manage_group_id=987'
+```
+
+ShapeApi::Collection and ShapeApi::Item also have `url` instance methods:
+
+```
+collection.url(org_slug: 'ford')
+'https://www.shape.space/ford/collections/123'
+
+collection.url(org_slug: 'ford')
+'https://www.shape.space/ford/collections/123'
+```
+
 ## Testing
 
 We have built class and instance-level mocking methods that you can use in RSpec.
