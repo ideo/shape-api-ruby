@@ -1,6 +1,7 @@
 module ShapeApi
   class Collection < Base
     include ShapeApi::Resourceable
+    include ShapeApi::Routable
 
     # POST /collections/create_template
     custom_endpoint :create_template, on: :collection, request_method: :post
