@@ -1,5 +1,9 @@
 require 'helper'
 
+describe ShapeApi::Role do
+  subject { ShapeApi::Role }
+end
+
 describe ShapeApi::CollectionRole do
   subject { ShapeApi::CollectionRole }
 
