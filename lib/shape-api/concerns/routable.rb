@@ -3,18 +3,26 @@ module ShapeApi
     extend ActiveSupport::Concern
 
     included do
-      def self.url(id:, org_slug: nil)
-        klass = name.split('::').last
-        path = klass.downcase.pluralize
+      def self.shape_url(id:, org_slug: nil)
+        ShapeApi::Base::URL + shape_path(id: id, org_slug: org_slug)
+      end
 
-        url = ShapeApi::Base::URL
-        url += "/#{org_slug}" if org_slug.present?
-        "#{url}/#{path}/#{id}"
+      def self.shape_path(id:, org_slug: nil)
+        klass = name.split('::').last
+        object_type = klass.downcase.pluralize
+        '/' + [org_slug, object_type, id].compact.join('/')
       end
     end
 
-    def url(org_slug: nil)
-      self.class.url(
+    def shape_url(org_slug: nil)
+      self.class.shape_url(
+        id: id,
+        org_slug: org_slug,
+      )
+    end
+
+    def shape_path(org_slug: nil)
+      self.class.shape_path(
         id: id,
         org_slug: org_slug,
       )
