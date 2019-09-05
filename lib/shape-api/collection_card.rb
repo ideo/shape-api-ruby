@@ -1,5 +1,11 @@
 module ShapeApi
   class CollectionCard < Base
+    # PATCH /collection_cards/:id/archive
+    custom_endpoint :archive, on: :member, request_method: :patch
+
+    # PATCH /collection_cards/:id/unarchive
+    custom_endpoint :unarchive, on: :member, request_method: :patch
+
     def self.create_with_text_item(**params)
       unless params[:item_attributes].present?
         card = new
