@@ -1,5 +1,11 @@
 module ShapeApi
   class CollectionCard < Base
+    # POST /collection_cards/move
+    custom_endpoint :move, on: :collection, request_method: :post
+
+    # POST /collection_cards/link
+    custom_endpoint :link, on: :collection, request_method: :post
+
     # PATCH /collection_cards/:id/archive
     custom_endpoint :archive, on: :member, request_method: :patch
 
