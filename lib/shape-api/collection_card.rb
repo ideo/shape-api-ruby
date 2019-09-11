@@ -7,10 +7,10 @@ module ShapeApi
     custom_endpoint :link, on: :collection, request_method: :post
 
     # PATCH /collection_cards/:id/archive
-    custom_endpoint :archive, on: :member, request_method: :patch
+    custom_endpoint :archive, on: :collection, request_method: :patch
 
     # PATCH /collection_cards/:id/unarchive
-    custom_endpoint :unarchive, on: :member, request_method: :patch
+    custom_endpoint :unarchive, on: :collection, request_method: :patch
 
     def self.create_with_text_item(**params)
       unless params[:item_attributes].present?
