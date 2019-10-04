@@ -10,7 +10,7 @@ module ShapeApiMocks
   # See the README for usage details
   #
 
-  def shape_api_register_double(model_name, custom_instance_doubles = {})
+  def shape_api_register_instance_double(model_name, class_doubles = :all_class_doubles)
     klass = model_name.safe_constantize
     underscore_klass = klass.model_name.param_key
 
@@ -24,6 +24,16 @@ module ShapeApiMocks
       )
     end
 
+    class_doubles = {} if class_doubles == :all_class_doubles
+
+    return unless class_doubles.is_a?(Hash)
+
+    shape_api_register_class_doubles(model_name, class_doubles)
+  end
+
+  def shape_api_register_class_doubles(model_name, default_params)
+    klass = model_name.safe_constantize
+    underscore_klass = klass.model_name.param_key
     # Define class dobule that matches lowercase class name,
     # e.g. `shape_api_collection_double`
     #
@@ -32,21 +42,19 @@ module ShapeApiMocks
     define_singleton_method "#{underscore_klass}_double" do |params = {}|
       instance_double = send("#{underscore_klass}_instance_double")
 
-      allow(klass).to receive(:where).and_return(
-        custom_instance_doubles[:where] || params[:where] || [instance_double],
-      )
-
-      allow(klass).to receive(:find).and_return(
-        custom_instance_doubles[:find] || params[:find] || [instance_double],
-      )
-
-      allow(klass).to receive(:new).and_return(
-        custom_instance_doubles[:new] || params[:new] || instance_double,
-      )
-
-      allow(klass).to receive(:create).and_return(
-        custom_instance_doubles[:create] || params[:create] || instance_double,
-      )
+      %i[where find new create].each do |method|
+        # Pass in a proc if you'd like to handle the stub with custom response values
+        if default_params[method].is_a?(Proc) || params[method].is_a?(Proc)
+          allow(klass).to receive(method) do |args|
+            params[method]&.call(args) ||
+              default_params[method].call(args)
+          end
+        else
+          allow(klass).to receive(method).and_return(
+            params[method] || default_params[method] || [instance_double],
+          )
+        end
+      end
     end
 
     # Call class methods so they are mocked
