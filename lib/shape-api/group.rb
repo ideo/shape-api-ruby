@@ -10,7 +10,7 @@ module ShapeApi
     # `handle` also needs to be unique, we don't currently generate a unique one for you :(
 
     def self.manage_url(id: nil, org_slug: nil)
-      "#{ShapeApi::Base::URL}/#{org_slug ? org_slug : nil}?manage_group_id=#{id}"
+      "#{ShapeApi::Base.app_url}/#{org_slug ? org_slug : nil}?manage_group_id=#{id}"
     end
 
     def manage_url(org_slug: nil)

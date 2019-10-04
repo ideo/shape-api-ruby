@@ -15,6 +15,18 @@ describe ShapeApi::Collection do
         'https://www.shape.space/ideo/collections/25',
       )
     end
+
+    context 'with different app url' do
+      before do
+        ShapeApi::Base.app_url = 'https://staging.shape.space'
+      end
+
+      it 'uses specified app url' do
+        expect(collection.shape_url(org_slug: 'ideo')).to eq(
+          'https://staging.shape.space/ideo/collections/25',
+        )
+      end
+    end
   end
 
   describe '#shape_path' do

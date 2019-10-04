@@ -4,7 +4,7 @@ module ShapeApi
 
     included do
       def self.shape_url(id:, org_slug: nil)
-        ShapeApi::Base::URL + shape_path(id: id, org_slug: org_slug)
+        ShapeApi::Base.app_url + shape_path(id: id, org_slug: org_slug)
       end
 
       def self.shape_path(id:, org_slug: nil)

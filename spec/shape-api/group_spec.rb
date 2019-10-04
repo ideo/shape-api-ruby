@@ -25,5 +25,17 @@ describe ShapeApi::Group do
         'https://www.shape.space/ideo?manage_group_id=123',
       )
     end
+
+    context 'with different app url' do
+      before do
+        ShapeApi::Base.app_url = 'https://staging.shape.space'
+      end
+
+      it 'uses specified app url' do
+        expect(group.manage_url(org_slug: 'ideo')).to eq(
+          'https://staging.shape.space/ideo?manage_group_id=123',
+        )
+      end
+    end
   end
 end
