@@ -42,6 +42,8 @@ module ShapeApiMocks
     define_singleton_method "#{underscore_klass}_double" do |params = {}|
       instance_double = send("#{underscore_klass}_instance_double")
 
+      singular_methods = %i[new create]
+
       %i[where find new create].each do |method|
         # Pass in a proc if you'd like to handle the stub with custom response values
         if default_params[method].is_a?(Proc) || params[method].is_a?(Proc)
@@ -50,9 +52,10 @@ module ShapeApiMocks
               default_params[method].call(args)
           end
         else
-          allow(klass).to receive(method).and_return(
-            params[method] || default_params[method] || [instance_double],
-          )
+          return_value = params[method] || default_params[method]
+          return_value ||= singular_methods.include?(method) ? instance_double : [instance_double]
+
+          allow(klass).to receive(method).and_return(return_value)
         end
       end
     end
