@@ -27,3 +27,11 @@ describe ShapeApi::GroupRole do
     expect(subject.table_name).to eq('roles')
   end
 end
+
+describe ShapeApi::DatasetRole do
+  subject { ShapeApi::DatasetRole }
+
+  it 'has roles table name' do
+    expect(subject.table_name).to eq('roles')
+  end
+end

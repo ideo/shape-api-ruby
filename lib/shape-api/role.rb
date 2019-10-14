@@ -29,4 +29,12 @@ module ShapeApi
       'roles'
     end
   end
+
+  class DatasetRole < Base
+    belongs_to :dataset, shallow_path: true
+
+    def self.table_name
+      'roles'
+    end
+  end
 end
