@@ -3,6 +3,9 @@ module ShapeApi
     # POST /collection_cards/move
     custom_endpoint :move, on: :collection, request_method: :post
 
+    # POST /collection_cards/duplicate
+    custom_endpoint :duplicate, on: :collection, request_method: :post
+
     # POST /collection_cards/link
     custom_endpoint :link, on: :collection, request_method: :post
 
